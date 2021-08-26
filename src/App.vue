@@ -1,15 +1,28 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="appWrapper">
+    <PlayerMaterials/>
+    <BuildingLocations/>
+    <ShopComponent/>
+    <UpgradeComp/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PlayerMaterials from './components/PlayerMaterials.vue'
+import BuildingLocations from "@/components/BuildingLocations";
+import ShopComponent from "@/components/ShopComponent";
+import UpgradeComp from "@/components/UpgradeComp";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    UpgradeComp,
+    PlayerMaterials,
+    BuildingLocations,
+    ShopComponent
+  },
+  created() {
+    this.$store.dispatch('resourceBuildUp')
   }
 }
 </script>
@@ -21,6 +34,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+.appWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 </style>
