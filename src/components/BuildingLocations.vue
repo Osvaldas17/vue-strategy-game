@@ -1,11 +1,11 @@
 <template>
   <div class="buildingWrapper">
     <div v-for="(item,index) in player.buildings" :key="index">
-      <div @click="selectBuildingSpot(index)" v-if="Object.entries(item).length === 0" class="buildingCon"
+      <div @click="selectBuildingSpot(index)" v-if="item === null" class="buildingCon"
            :class="[index === locationSelected ? 'selected' : '']">
         <p class="build">BUILD</p>
       </div>
-      <div v-else class="buildingCon">
+      <div v-if="item !== null" class="buildingCon">
         <div class="buildingSub" :class="[index === buildingSelected ? 'selected' : '']">
           <button @click="sellBuilding(item,index)" class="sell">SELL</button>
           <div class="backgroundImg" :style="{ backgroundImage: `url(${item.image})` }">

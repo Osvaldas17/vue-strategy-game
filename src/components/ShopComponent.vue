@@ -30,7 +30,6 @@
 
 <script>
 import {mapState} from "vuex";
-import * as lodash from "lodash";
 
 export default {
   name: "ShopComponent",
@@ -44,7 +43,7 @@ export default {
     checkIfAvailable(item) {
       let arr = []
       this.player.buildings.filter(e => {
-        if (!lodash.isEmpty(e)) {
+        if (e !== null) {
           arr.push(e.name)
         }
       })

@@ -1,6 +1,7 @@
 <template>
   <div class="appWrapper">
     <PlayerMaterials/>
+    <InsufficientFunds/>
     <BuildingLocations/>
     <ShopComponent/>
     <UpgradeComp/>
@@ -9,9 +10,10 @@
 
 <script>
 import PlayerMaterials from './components/PlayerMaterials.vue'
-import BuildingLocations from "@/components/BuildingLocations";
-import ShopComponent from "@/components/ShopComponent";
-import UpgradeComp from "@/components/UpgradeComp";
+import BuildingLocations from "./components/BuildingLocations";
+import ShopComponent from "./components/ShopComponent";
+import UpgradeComp from "./components/UpgradeComp";
+import InsufficientFunds from "./components/InsufficientFunds";
 
 export default {
   name: 'App',
@@ -19,7 +21,8 @@ export default {
     UpgradeComp,
     PlayerMaterials,
     BuildingLocations,
-    ShopComponent
+    ShopComponent,
+    InsufficientFunds
   },
   created() {
     this.$store.dispatch('resourceBuildUp')

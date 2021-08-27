@@ -1,10 +1,10 @@
 import {createStore} from 'vuex'
-import * as lodash from 'lodash'
 
 export default createStore({
     state: {
         locationSelected: null,
         buildingSelected: null,
+        insufficientFunds: false,
         nextUpgrade: {
             cost: {
                 gold: null,
@@ -29,7 +29,7 @@ export default createStore({
                 wood: 10000,
                 stone: 10000
             },
-            buildings: [{}, {}, {}, {}, {}]
+            buildings: [null, null, null, null, null]
         },
         shop: [
             {
@@ -124,13 +124,12 @@ export default createStore({
             state.locationSelected = null
         },
         addBuilding(state, payload) {
-            const deepCopy = {...payload};
-            Object.assign(state.player.buildings[state.locationSelected], deepCopy)
+            state.player.buildings[state.locationSelected] = {...payload}
             state.locationSelected = null
         },
         removeBuilding(state, index) {
             state.buildingSelected = null
-            state.player.buildings[index] = {}
+            state.player.buildings[index] = null
         },
         addMaterials(state, [gold, wood, stone]) {
             state.player.stats.gold += Number(gold)
@@ -153,6 +152,10 @@ export default createStore({
         },
         profitRates(state, payload) {
             state.gatheringRates = payload
+        },
+        insufficientFunds(state) {
+            state.insufficientFunds = true
+            setTimeout(() => { state.insufficientFunds = false },1000);
         }
     },
     actions: {
@@ -174,7 +177,7 @@ export default createStore({
             state.gatheringRates.wood = 0
             state.gatheringRates.stone = 0
             state.player.buildings.filter(e => {
-                if (!lodash.isEmpty(e)) {
+                if (e !== null) {
                     let profit = {
                         gold: state.gatheringRates.gold + Number(e.profit.gold),
                         wood: state.gatheringRates.wood + Number(e.profit.wood),
@@ -191,7 +194,7 @@ export default createStore({
                 commit('removeMaterials', [payload.cost.gold, payload.cost.wood, payload.cost.stone])
                 commit('addBuilding', payload)
                 dispatch('setGatheringRates')
-            } else console.log('no money no honey')
+            } else commit('insufficientFunds')
         },
         setNextUpgrade({state, commit}) {
             if (state.buildingSelected || state.buildingSelected === 0 || state.player.buildings[state.buildingSelected].level < 5) {
@@ -231,7 +234,7 @@ export default createStore({
                 dispatch('setNextUpgrade')
                 dispatch('setGatheringRates')
             } else {
-                console.log('not enough materials')
+                commit('insufficientFunds')
             }
         }
 
